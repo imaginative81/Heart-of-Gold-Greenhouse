@@ -1,0 +1,25 @@
+server {
+    listen       ${PORT};
+    server_name  _;
+    root         /usr/share/nginx/html;
+    index        index.html;
+
+    types {
+        text/html                             html;
+        text/css                              css;
+        application/javascript                js;
+        application/javascript                jsx;
+        image/svg+xml                         svg;
+        image/png                             png;
+        image/jpeg                            jpg jpeg;
+        application/font-woff2                woff2;
+    }
+
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    location ~* \.(?:html|jsx|js|css)$ {
+        add_header Cache-Control "no-cache, must-revalidate";
+    }
+}

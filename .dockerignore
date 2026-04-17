@@ -1,0 +1,8 @@
+.git
+.gitignore
+HANDOFF.md
+README.md
+.DS_Store
+.playwright-mcp
+.design-bundle
+node_modules
