@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Heart of Gold · Greenhouse Frame Plan · Sheets</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    @page { size: 11in 8.5in; margin: 0.4in; }
+    html, body { background: #0f2742; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+    .sheet {
+      width: 10.2in;
+      height: 7.7in;
+      margin: 0 auto 0.25in;
+      page-break-after: always;
+      break-after: page;
+      background:
+        linear-gradient(rgba(180,210,255,0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180,210,255,0.10) 1px, transparent 1px),
+        linear-gradient(rgba(180,210,255,0.22) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(180,210,255,0.22) 1px, transparent 1px),
+        #0b2340;
+      background-size: 18px 18px, 18px 18px, 90px 90px, 90px 90px;
+      color: var(--line);
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      border: 1px solid var(--line-soft);
+      padding: 0;
+      position: relative;
+      overflow: hidden;
+    }
+    .sheet:last-child { page-break-after: auto; break-after: auto; }
+
+    .sheet-head {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 10px 18px;
+      border-bottom: 1px solid var(--line-soft);
+      background: rgba(0,0,0,0.15);
+    }
+    .sheet-head .left { display: flex; align-items: center; gap: 14px; }
+    .sheet-head .stamp {
+      width: 36px; height: 36px; border: 1px solid var(--line); display: grid; place-items: center;
+      font-family: var(--mono); font-weight: 700; color: var(--accent); letter-spacing: 0.05em;
+      font-size: 12px;
+    }
+    .sheet-head h1 {
+      margin: 0; font-family: var(--mono); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.14em; text-transform: uppercase;
+    }
+    .sheet-head .sub { font-size: 9.5px; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; }
+    .sheet-head .meta { font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); text-align: right; line-height: 1.7; }
+    .sheet-head .meta b { color: var(--line); font-weight: 500; }
+
+    .sheet-body {
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      min-height: 0;
+    }
+    .sheet-body svg { width: 100%; height: 100%; max-height: 6.6in; overflow: visible; }
+
+    .sheet-foot {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 6px 18px;
+      border-top: 1px solid var(--line-soft);
+      font-family: var(--mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--ink-soft);
+      background: rgba(0,0,0,0.2);
+    }
+    .sheet-foot .no { color: var(--accent); }
+    .sheet-foot .title { color: var(--line); }
+
+    /* Corner ticks on sheet */
+    .sheet::before, .sheet::after, .sheet .tick-tl, .sheet .tick-tr {
+      content: ""; position: absolute; width: 8px; height: 8px; border: 1px solid var(--line-soft);
+      background: #0b2340;
+    }
+    .sheet::before { bottom: -4px; left: -4px; }
+    .sheet::after { bottom: -4px; right: -4px; }
+    .sheet .tick-tl { top: -4px; left: -4px; }
+    .sheet .tick-tr { top: -4px; right: -4px; }
+
+    /* Data sheets */
+    .data-sheet .sheet-body { align-items: start; padding: 18px 26px; }
+    .data-sheet .cols {
+      width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+      font-family: var(--mono); font-size: 10.5px; line-height: 1.5;
+    }
+    .data-sheet h2 {
+      font-family: var(--mono); font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); font-weight: 500; margin: 0 0 8px; padding-bottom: 4px;
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .data-sheet table { width: 100%; border-collapse: collapse; font-size: 10px; margin-bottom: 14px; }
+    .data-sheet table th, .data-sheet table td {
+      text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--line-soft);
+    }
+    .data-sheet table th { font-size: 8.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); font-weight: 500; }
+    .data-sheet table .q { color: var(--accent); width: 32px; }
+    .data-sheet table .len { color: var(--accent-2); white-space: nowrap; }
+    .data-sheet .note { color: var(--ink-soft); font-size: 9.5px; }
+    .data-sheet .group-label { color: var(--accent); font-size: 9.5px; letter-spacing: 0.16em; text-transform: uppercase; margin: 8px 0 4px; }
+
+    .steps-sheet ol { counter-reset: step; padding: 0; margin: 0; list-style: none; }
+    .steps-sheet li { padding: 6px 0 6px 28px; position: relative; counter-increment: step; border-bottom: 1px solid var(--line-soft); font-size: 10.5px; }
+    .steps-sheet li::before {
+      content: counter(step, decimal-leading-zero);
+      position: absolute; left: 0; top: 7px; font-family: var(--mono); font-size: 10px; color: var(--accent);
+    }
+    .steps-sheet .st-title { font-weight: 500; color: var(--line); }
+    .steps-sheet .st-meta { font-size: 9px; color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 2px; }
+    .steps-sheet .st-success { font-size: 9.5px; color: var(--ok); margin-top: 3px; font-style: italic; }
+
+    /* Cover sheet special */
+    .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 18px; text-align: center; padding: 40px; }
+    .cover .stamp-big {
+      width: 110px; height: 110px; border: 2px solid var(--line);
+      display: grid; place-items: center;
+      font-family: var(--mono); font-weight: 700; color: var(--accent); letter-spacing: 0.08em; font-size: 38px;
+    }
+    .cover h1 {
+      font-family: var(--mono); font-weight: 500; font-size: 26px;
+      letter-spacing: 0.14em; text-transform: uppercase; margin: 0;
+    }
+    .cover .tag {
+      font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: 0.3em; text-transform: uppercase;
+    }
+    .cover .desc { font-family: var(--mono); font-size: 12px; color: var(--ink-soft); letter-spacing: 0.06em; max-width: 520px; line-height: 1.7; }
+    .cover .grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-soft);
+      border: 1px solid var(--line-soft); margin-top: 20px; width: 100%; max-width: 740px;
+    }
+    .cover .gcell { background: #0b2340; padding: 10px 12px; }
+    .cover .gk { font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+    .cover .gv { font-size: 18px; color: var(--line); font-family: var(--mono); margin-top: 3px; }
+    .cover .gv small { color: var(--accent); font-size: 12px; margin-left: 3px; }
+
+    .cover .sheet-index {
+      margin-top: 24px; font-family: var(--mono); font-size: 10px;
+      color: var(--ink-soft); letter-spacing: 0.1em; text-transform: uppercase;
+      display: grid; grid-template-columns: auto 1fr auto; gap: 4px 24px; max-width: 580px; width: 100%;
+    }
+    .cover .sheet-index b { color: var(--accent); }
+    .cover .sheet-index span:nth-child(3n+2) { color: var(--line); text-align: left; }
+
+    @media screen {
+      body { padding: 20px 0; }
+      .sheet { box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="data.jsx"></script>
+  <script type="text/babel" src="Visualizer.jsx"></script>
+  <script type="text/babel" src="Elevations.jsx"></script>
+  <script type="text/babel" src="layer6.jsx"></script>
+  <script type="text/babel" src="layer6-views.jsx"></script>
+
+  <script type="text/babel">
+    const ALL_ON = {
+      sills: true, southStuds: true, northStuds: true, gableStuds: true, door: true,
+      topPlates: true, beams: true, rafters: true, purlin: true, fans: true,
+      wallPurlins: true, xBrace: true, panelGrid: false, tempBrace: false,
+    };
+
+    const SHEETS = [
+      { no: "A-000", title: "Cover", type: "cover" },
+      { no: "A-100", title: "Isometric Assembly Overview", type: "iso" },
+      { no: "A-200", title: "Plan View · Floor & Roof", type: "plan" },
+      { no: "A-301", title: "South Elevation · High Wall 8'-0\"", type: "south" },
+      { no: "A-302", title: "North Elevation · Low Wall 6'-8\"", type: "north" },
+      { no: "A-303", title: "East Gable · Door Elevation", type: "east" },
+      { no: "A-304", title: "West Gable · Exhaust Elevation", type: "west" },
+      { no: "S-100", title: "Cut List · Steel Framing", type: "cutlist" },
+      { no: "S-200", title: "Materials & Hardware Order", type: "materials" },
+      { no: "C-100", title: "Build Sequence · 13 Steps", type: "steps" },
+      { no: "C-200", title: "Failure Diagnostics", type: "diagnostics" },
+      // ---- Layer 6 · Glazing ----
+      { no: "G-000", title: "Layer 6 · Glazing Cover", type: "g-cover" },
+      { no: "G-001", title: "Pre-Order Verifications · 4 Critical Checks", type: "g-verify" },
+      { no: "G-100", title: "Glazing Overview · Iso + Summary", type: "g-overview" },
+      { no: "G-301", title: "South Wall Glazing · 9 Panels", type: "g-south" },
+      { no: "G-302", title: "North Wall Glazing · 9 Panels", type: "g-north" },
+      { no: "G-303", title: "East Gable Glazing · Door + Intake", type: "g-east" },
+      { no: "G-304", title: "West Gable Glazing · Exhaust", type: "g-west" },
+      { no: "G-400", title: "Roof Glazing Plan · 9 Panels + 2 Vents", type: "g-roof" },
+      { no: "G-500", title: "Panel Cut List", type: "g-panels" },
+      { no: "G-501", title: "Trim · H-profiles, U-caps, Flashing", type: "g-trim" },
+      { no: "G-600", title: "Critical Details · UV, Thermal, Weep, Cutouts", type: "g-details" },
+      { no: "G-700", title: "Fasteners, Hardware, Order Totals", type: "g-order" },
+      { no: "G-800", title: "Build Sequence · 9 Steps", type: "g-steps" },
+    ];
+
+    function SheetHead({ sheet, index, total }) {
+      const isL6 = sheet.no.startsWith("G-");
+      return (
+        <div className="sheet-head">
+          <div className="left">
+            <div className="stamp">HG</div>
+            <div>
+              <h1>Heart of Gold Greenhouse · {isL6 ? "Polycarbonate Glazing" : "Metal Stud Frame"}</h1>
+              <div className="sub">{isL6 ? "18 ft × 12 ft · DGSL 4mm Twin-Wall PC · 98 Panels" : "18 ft × 12 ft · 4:12 Mono-Pitch · 6\" 18-ga Cold-Formed Steel"}</div>
+            </div>
+          </div>
+          <div className="meta">
+            <div>Sheet <b>{sheet.no}</b> · {String(index).padStart(2, "0")}/{String(total).padStart(2, "0")}</div>
+            <div>{isL6 ? <>Panels <b>98</b> · Rev <b>B</b></> : <>Scale <b>3/8" = 1'-0"</b> · Rev <b>B</b></>}</div>
+            <div>Date <b>04.17.26</b> · Crew <b>2</b> · Est <b>{isL6 ? "10" : "14"} hr</b></div>
+          </div>
+        </div>
+      );
+    }
+
+    function SheetFoot({ sheet }) {
+      const isL6 = sheet.no.startsWith("G-");
+      return (
+        <div className="sheet-foot">
+          <span className="title">{sheet.title}</span>
+          <span>Heart of Gold Greenhouse · {isL6 ? "Layer 6/6 Polycarbonate Glazing" : "Layer 1/6 Metal Frame"}</span>
+          <span className="no">{sheet.no}</span>
+        </div>
+      );
+    }
+
+    function Cover() {
+      return (
+        <div className="cover">
+          <div className="tag">Construction Document Set · Rev B</div>
+          <div className="stamp-big">HG</div>
+          <h1>Heart of Gold<br/>Greenhouse Frame</h1>
+          <div className="desc">
+            Metal stud frame drawings and build plan for an 18 ft × 12 ft mono-pitch greenhouse.
+            Full cut list, 13-step build sequence, and failure diagnostics. Layer 1 of 6.
+          </div>
+          <div className="grid">
+            <div className="gcell"><div className="gk">Length E–W</div><div className="gv">18<small>ft</small></div></div>
+            <div className="gcell"><div className="gk">Width N–S</div><div className="gv">12<small>ft</small></div></div>
+            <div className="gcell"><div className="gk">Height S</div><div className="gv">8<small>ft</small></div></div>
+            <div className="gcell"><div className="gk">Height N</div><div className="gv">6'8"</div></div>
+            <div className="gcell"><div className="gk">Pitch</div><div className="gv">4:12</div></div>
+            <div className="gcell"><div className="gk">Stud OC</div><div className="gv">2'-0"<small>(24 in)</small></div></div>
+            <div className="gcell"><div className="gk">Gauge</div><div className="gv">18<small>ga</small></div></div>
+            <div className="gcell"><div className="gk">Rafter</div><div className="gv">12'4"</div></div>
+          </div>
+          <div className="sheet-index">
+            {SHEETS.filter(s => s.type !== "cover").map(s => (
+              <React.Fragment key={s.no}>
+                <b>{s.no}</b>
+                <span>{s.title}</span>
+                <span></span>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function CutlistSheet() {
+      return (
+        <div className="cols">
+          {window.CUT_LIST.map((g, gi) => (
+            <div key={gi}>
+              <h2>{g.group}</h2>
+              <table>
+                <thead><tr><th>Qty</th><th>Spec</th><th>Length</th><th>Note</th></tr></thead>
+                <tbody>
+                  {g.items.map((it, i) => (
+                    <tr key={i}>
+                      <td className="q">×{it.q}</td>
+                      <td>{it.spec}</td>
+                      <td className="len">{it.len}</td>
+                      <td className="note">{it.note}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function MaterialsSheet() {
+      return (
+        <div className="cols">
+          <div>
+            {window.MATERIALS.map((g, i) => (
+              <div key={i}>
+                <h2>{g.group}</h2>
+                <table>
+                  <tbody>
+                    {g.items.map((it, j) => (
+                      <tr key={j}>
+                        <td>{it.name}</td>
+                        <td className="len" style={{ textAlign: "right" }}>{it.qty}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            ))}
+          </div>
+          <div>
+            <h2>Specifications</h2>
+            <table><tbody>
+              {window.SPECS.map((s, i) => (
+                <tr key={i}><td>{s.k}</td><td className="len" style={{ textAlign: "right" }}>{s.v}{s.u}</td></tr>
+              ))}
+            </tbody></table>
+            <h2 style={{ marginTop: 18 }}>Purchase Notes</h2>
+            <div className="note" style={{ lineHeight: 1.7 }}>
+              Order 40 studs at full 18 ft length and cut to size on site — saves waste vs. pre-cut.
+              Track in 10 ft lengths, splice with 12 in overlap + 4 screws. Keep stud offcuts for cripples,
+              jacks, and fan opening framing.
+            </div>
+            <h2 style={{ marginTop: 18 }}>Success Conditions</h2>
+            <div className="note" style={{ lineHeight: 1.7 }}>
+              • All wall studs plumb within 1/8 in.<br/>
+              • All corners square, diagonals equal within 1/2 in.<br/>
+              • Every vertical panel seam falls on a stud.<br/>
+              • Frame does not rack under 50 lb lateral push at any corner.<br/>
+              • Fan openings accept fan + shutter with 1/8–1/4 in clearance.<br/>
+              • Rafters straight, parallel, level across roof.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function StepsSheet() {
+      return (
+        <div className="cols steps-sheet">
+          <ol>
+            {window.BUILD_STEPS.slice(0, 7).map(s => (
+              <li key={s.id}>
+                <div className="st-title">{s.title}</div>
+                <div className="st-meta">{s.meta}</div>
+                <div className="st-success">✓ {s.success}</div>
+              </li>
+            ))}
+          </ol>
+          <ol style={{ counterReset: "step 7" }}>
+            {window.BUILD_STEPS.slice(7).map(s => (
+              <li key={s.id}>
+                <div className="st-title">{s.title}</div>
+                <div className="st-meta">{s.meta}</div>
+                <div className="st-success">✓ {s.success}</div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+    }
+
+    function DiagnosticsSheet() {
+      return (
+        <div style={{ width: "100%", fontFamily: "var(--mono)", fontSize: 11, lineHeight: 1.5 }}>
+          <h2 style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 500, margin: "0 0 14px", paddingBottom: 4, borderBottom: "1px solid var(--line-soft)" }}>
+            Failure Diagnostics · Symptom → Fix
+          </h2>
+          {window.DIAGNOSTICS.map((d, i) => (
+            <div key={i} style={{ borderLeft: "2px solid var(--warn)", background: "rgba(255,209,102,0.04)", padding: "10px 14px", marginBottom: 10 }}>
+              <div style={{ fontSize: 11.5, color: "var(--warn)", letterSpacing: "0.03em", marginBottom: 4 }}>⚠ {d.sym}</div>
+              <div style={{ fontSize: 10.5, color: "var(--line)", lineHeight: 1.55 }}>{d.fix}</div>
+            </div>
+          ))}
+          <div style={{ marginTop: 20, padding: 14, border: "1px solid var(--accent)", color: "var(--line)", fontSize: 10.5, lineHeight: 1.7 }}>
+            <div style={{ color: "var(--accent)", letterSpacing: "0.16em", textTransform: "uppercase", fontSize: 10, marginBottom: 6 }}>Most Common Failure</div>
+            Panel seam misses stud. Cut was off the 2 ft grid. <b style={{ color: "var(--accent-2)" }}>Re-measure all stud positions BEFORE installing panels.</b>
+            Fixing after glazing means pulling panels and re-cutting — do not proceed to Layer 6 without verifying the panel-fastening grid.
+          </div>
+        </div>
+      );
+    }
+
+    // ---- Layer 6 sheets ----
+    function GlazingCover() {
+      return (
+        <div className="cover">
+          <div className="tag">Layer 6 · Polycarbonate Glazing · Rev B · 04.17.26</div>
+          <div className="stamp-big" style={{ color: "var(--accent-2)" }}>L6</div>
+          <h1>Heart of Gold<br/>Greenhouse Glazing</h1>
+          <div className="desc">
+            DGSL 4mm twin-wall polycarbonate · 2'×4' fixed panels · 2-row walls, 3-row roof. 98 panels (7 packs × 14).
+            Full cut list, trim schedule, fastener details, pre-order verifications, and 10-step build sequence. Install on completed Layer 1 metal frame.
+          </div>
+          <div className="grid">
+            <div className="gcell"><div className="gk">Panel</div><div className="gv">4mm<small>DGSL</small></div></div>
+            <div className="gcell"><div className="gk">Size</div><div className="gv">2'×4'</div></div>
+            <div className="gcell"><div className="gk">Walls</div><div className="gv">36</div></div>
+            <div className="gcell"><div className="gk">Gables</div><div className="gv">24</div></div>
+            <div className="gcell"><div className="gk">Roof</div><div className="gv">27</div></div>
+            <div className="gcell"><div className="gk">Scrap+Waste</div><div className="gv">11</div></div>
+            <div className="gcell"><div className="gk">Total</div><div className="gv">98</div></div>
+            <div className="gcell"><div className="gk">Fastener OC</div><div className="gv">8"<small>vert</small></div></div>
+          </div>
+          <div className="sheet-index">
+            {SHEETS.filter(s => s.no.startsWith("G-") && s.type !== "g-cover").map(s => (
+              <React.Fragment key={s.no}>
+                <b>{s.no}</b>
+                <span>{s.title}</span>
+                <span></span>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function L6VerifySheet() {
+      const checks = [
+        { n: "01", title: "Trim Profile Rated for 4mm (0.16 in)", critical: true,
+          body: "Confirm in writing with supplier that EVERY H-channel, J-channel, and F-channel ordered is explicitly rated for 4mm / 0.16\" twin-wall. 6mm or 8mm channels will NOT grip 4mm panels — they slip, fall out, or shatter the panel edge under wind load.",
+          action: "Email supplier with product SKUs, request written confirmation of profile width. Do NOT accept verbal confirmation." },
+        { n: "02", title: "UV-Coated Side Marked on Panel", critical: true,
+          body: "DGSL listing states 99.5% UV block but does NOT specify which face has the coating or whether it is marked. UV-side-out is mandatory. Installing inverted yellows panels within 2 years and voids warranty.",
+          action: "Contact DGSL seller: (1) which face has UV? (2) is that face marked with film, sticker, or printed arrow? If not marked, request that every panel ship with UV-side tape." },
+        { n: "03", title: "Flute Direction Along 4 ft Long Side", critical: true,
+          body: "This plan requires flutes parallel to the 4 ft edge: vertical on walls (drainage down), down-slope on roof (condensation runoff to eave). If DGSL flutes run along the 2 ft short side, the entire cut plan fails — you cannot install these panels as specified.",
+          action: "Confirm with seller (ideally with a photograph of an end-cap showing flute channels)." },
+        { n: "04", title: "Written Warranty Terms", critical: false,
+          body: "Budget 4mm twin-wall PC typically carries 3–10 yr UV coverage. Warranty terms vary widely between no-name and branded product. Get written terms before install — 4mm may be marginal for Zone 8a snow events and you want recourse if panels crack, yellow, or delaminate.",
+          action: "Request PDF warranty document from DGSL. Keep with permit paperwork." },
+      ];
+      return (
+        <div style={{ width: "100%", fontFamily: "var(--mono)", fontSize: 11, lineHeight: 1.55 }}>
+          <div style={{ background: "rgba(255,209,102,0.08)", border: "1px solid var(--warn)", padding: 12, marginBottom: 14 }}>
+            <div style={{ color: "var(--warn)", fontSize: 11, letterSpacing: "0.18em", textTransform: "uppercase", marginBottom: 4, fontWeight: 600 }}>⚠ Complete All 4 Before Placing Trim Order</div>
+            <div style={{ color: "var(--line)" }}>Total project spend ~$6,280–8,460. A single wrong-profile channel order wastes $900–1,500 and delays the build. These checks cost nothing but a phone call.</div>
+          </div>
+          <div style={{ display: "grid", gap: 12 }}>
+            {checks.map(c => (
+              <div key={c.n} style={{ border: `1px solid ${c.critical ? "var(--warn)" : "var(--accent-2)"}`, padding: 12, display: "grid", gridTemplateColumns: "auto 1fr", gap: 14 }}>
+                <div style={{ fontSize: 34, fontWeight: 700, color: c.critical ? "var(--warn)" : "var(--accent-2)", lineHeight: 1, letterSpacing: "-0.04em" }}>{c.n}</div>
+                <div>
+                  <div style={{ fontSize: 11.5, letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--ink)", marginBottom: 6, fontWeight: 600 }}>
+                    {c.title} {c.critical && <span style={{ color: "var(--warn)", fontSize: 9, marginLeft: 6 }}>CRITICAL</span>}
+                  </div>
+                  <div style={{ color: "var(--line)", marginBottom: 6 }}>{c.body}</div>
+                  <div style={{ color: "var(--accent)", fontSize: 10.5 }}><b>ACTION:</b> {c.action}</div>
+                  <div style={{ marginTop: 8, display: "flex", gap: 10, alignItems: "center" }}>
+                    <span style={{ display: "inline-block", width: 16, height: 16, border: "1.5px solid var(--ink)" }}></span>
+                    <span style={{ fontSize: 10, color: "var(--ink-soft)" }}>CONFIRMED IN WRITING · Date: ______________ · By: ______________</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div style={{ marginTop: 14, padding: 10, border: "1px dashed var(--ok)", color: "var(--line)" }}>
+            <b style={{ color: "var(--ok)" }}>✓ PROCEED to order only when all 4 boxes checked.</b> File this sheet with project records.
+          </div>
+        </div>
+      );
+    }
+
+    function L6PanelsSheet() {
+      return (
+        <div className="cols">
+          {window.L6_PANELS.map((g, gi) => (
+            <div key={gi}>
+              <h2>{g.group}</h2>
+              <table>
+                <thead><tr><th>Qty</th><th>ID</th><th>Size</th></tr></thead>
+                <tbody>
+                  {g.items.map((it, i) => (
+                    <tr key={i}>
+                      <td className="q">×{it.q}</td>
+                      <td>{it.name}<div className="note">{it.note}</div></td>
+                      <td className="len">{it.size}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function L6TrimSheet() {
+      return (
+        <div className="cols">
+          {window.L6_TRIM.map((g, gi) => (
+            <div key={gi}>
+              <h2>{g.group}</h2>
+              <table>
+                <tbody>
+                  {g.items.map((it, i) => (
+                    <tr key={i}>
+                      <td className="q">×{it.q}</td>
+                      <td>{it.name}<div className="note">{it.note}</div></td>
+                      <td className="len">{it.len}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      );
+    }
+
+    function L6DetailsSheet() {
+      return (
+        <div style={{ width: "100%", fontFamily: "var(--mono)", fontSize: 10.5, lineHeight: 1.55 }}>
+          <h2 style={{ fontSize: 10, letterSpacing: "0.18em", textTransform: "uppercase", color: "var(--accent)", fontWeight: 500, margin: "0 0 14px", paddingBottom: 4, borderBottom: "1px solid var(--line-soft)" }}>
+            Critical Installation Details
+          </h2>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            {window.L6_DETAILS.map(d => (
+              <div key={d.id} style={{ borderLeft: "2px solid var(--accent-2)", paddingLeft: 10 }}>
+                <div style={{ color: "var(--accent)", fontSize: 10, letterSpacing: "0.14em", textTransform: "uppercase", marginBottom: 4 }}>{d.id} · {d.title}</div>
+                <div style={{ color: "var(--line)" }}>{d.body}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      );
+    }
+
+    function L6OrderSheet() {
+      return (
+        <div className="cols">
+          <div>
+            <h2>Fasteners</h2>
+            <table><tbody>
+              {window.L6_FASTENERS.map((f, i) => (
+                <tr key={i}><td>{f.name}</td><td className="len" style={{textAlign:"right"}}>{f.qty}</td></tr>
+              ))}
+            </tbody></table>
+            <h2 style={{marginTop: 14}}>Hardware (separate order)</h2>
+            <table><tbody>
+              {window.L6_HARDWARE.map((f, i) => (
+                <tr key={i}><td>{f.name}</td><td className="len" style={{textAlign:"right"}}>{f.qty}</td></tr>
+              ))}
+            </tbody></table>
+          </div>
+          <div>
+            <h2>Order Totals</h2>
+            <table><tbody>
+              {window.L6_ORDER.map((o, i) => {
+                const isTotal = o.name === "PROJECT TOTAL";
+                return (
+                  <tr key={i} style={isTotal ? { borderTop: "1px solid var(--accent)", fontWeight: 700 } : null}>
+                    <td style={isTotal ? {color: "var(--accent)"} : null}>{o.name}</td>
+                    <td className="len" style={{textAlign:"right", color: isTotal ? "var(--accent)" : undefined}}>{o.qty}</td>
+                  </tr>
+                );
+              })}
+            </tbody></table>
+            <div className="note" style={{marginTop: 10, lineHeight: 1.7}}>
+              Order <b style={{color:"var(--accent)"}}>+10% overage</b> on all trim to cover mis-cuts and waste.
+              Verify UV-side marking on every sheet delivered before cutting — do not cut until marked.
+              <br/><b style={{color:"var(--warn)"}}>Budget swing ~$2,200</b> driven by H-channel supplier pricing (420 lf at $7–11/lf).
+            </div>
+            <h2 style={{marginTop: 14}}>Success Conditions</h2>
+            <div className="note" style={{lineHeight: 1.7}}>
+              • All panels UV-side OUT.<br/>
+              • Every fastener hole oversized +1/16".<br/>
+              • Weep holes present at every sill U-cap.<br/>
+              • Butyl tape continuous on all framing.<br/>
+              • Water test passes: no interior leaks under hose test.<br/>
+              • Fan test passes: cross-flow confirmed at intake + exhaust.
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    function L6StepsSheet() {
+      return (
+        <div className="cols steps-sheet">
+          <ol>
+            {window.L6_STEPS.slice(0, 5).map(s => (
+              <li key={s.id}>
+                <div className="st-title">{s.title}</div>
+                <div className="st-meta">{s.meta}</div>
+                <div className="st-success">✓ {s.success}</div>
+              </li>
+            ))}
+          </ol>
+          <ol style={{ counterReset: "step 5" }}>
+            {window.L6_STEPS.slice(5).map(s => (
+              <li key={s.id}>
+                <div className="st-title">{s.title}</div>
+                <div className="st-meta">{s.meta}</div>
+                <div className="st-success">✓ {s.success}</div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      );
+    }
+
+    function SheetBody({ sheet }) {
+      switch (sheet.type) {
+        case "cover":       return <Cover />;
+        case "iso":         return <IsoView show={ALL_ON} activeStep={13} onHoverStud={null} />;
+        case "plan":        return <Plan show={ALL_ON} />;
+        case "south":       return <SouthElev show={ALL_ON} />;
+        case "north":       return <NorthElev show={ALL_ON} />;
+        case "east":        return <EastElev show={ALL_ON} />;
+        case "west":        return <WestElev show={ALL_ON} />;
+        case "cutlist":     return <CutlistSheet />;
+        case "materials":   return <MaterialsSheet />;
+        case "steps":       return <StepsSheet />;
+        case "diagnostics": return <DiagnosticsSheet />;
+        case "g-cover":     return <GlazingCover />;
+        case "g-verify":    return <L6VerifySheet />;
+        case "g-overview":  return <L6Overview />;
+        case "g-south":     return <SouthGlazing />;
+        case "g-north":     return <NorthGlazing />;
+        case "g-east":      return <EastGlazing />;
+        case "g-west":      return <WestGlazing />;
+        case "g-roof":      return <RoofGlazing />;
+        case "g-panels":    return <L6PanelsSheet />;
+        case "g-trim":      return <L6TrimSheet />;
+        case "g-details":   return <L6DetailsSheet />;
+        case "g-order":     return <L6OrderSheet />;
+        case "g-steps":     return <L6StepsSheet />;
+      }
+    }
+
+    function Sheet({ sheet, index, total }) {
+      const isData = ["cutlist","materials","steps","diagnostics","g-panels","g-trim","g-details","g-order","g-steps"].includes(sheet.type);
+      const isCover = sheet.type === "cover" || sheet.type === "g-cover";
+      return (
+        <section className={`sheet ${isData ? "data-sheet" : ""} ${isCover ? "cover-sheet" : ""}`}>
+          <span className="tick-tl"/><span className="tick-tr"/>
+          <SheetHead sheet={sheet} index={index} total={total} />
+          <div className="sheet-body">
+            <SheetBody sheet={sheet} />
+          </div>
+          <SheetFoot sheet={sheet} />
+        </section>
+      );
+    }
+
+    function PrintDoc() {
+      return <>
+        {SHEETS.map((s, i) => <Sheet key={s.no} sheet={s} index={i + 1} total={SHEETS.length} />)}
+      </>;
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<PrintDoc />);
+
+    // Auto-print once fonts + JSX are ready
+    (async () => {
+      try { if (document.fonts && document.fonts.ready) await document.fonts.ready; } catch (e) {}
+      await new Promise(r => setTimeout(r, 700));
+      window.print();
+    })();
+  </script>
+</body>
+</html>

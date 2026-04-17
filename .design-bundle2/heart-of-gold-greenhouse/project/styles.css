@@ -29,9 +29,8 @@ body {
   min-height: 100vh;
 }
 
-button { font-family: inherit; font-size: inherit; color: inherit; background: transparent; border: 0; cursor: pointer; touch-action: manipulation; }
+button { font-family: inherit; font-size: inherit; color: inherit; background: transparent; border: 0; cursor: pointer; }
 button:focus-visible { outline: 1px solid var(--accent-2); outline-offset: 2px; }
-.step-list li, .step-pill, .layer-row, .diag { touch-action: manipulation; }
 
 .app {
   display: grid;
@@ -87,6 +86,30 @@ button:focus-visible { outline: 1px solid var(--accent-2); outline-offset: 2px; 
   color: var(--ink-soft);
 }
 .metabar b { color: var(--line); font-weight: 500; }
+
+.layer-switch {
+  display: flex; gap: 0;
+  border: 1px solid var(--line-soft);
+  background: #0b2340;
+}
+.layer-switch button {
+  background: transparent;
+  color: var(--ink-soft);
+  border: none;
+  padding: 6px 12px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-right: 1px solid var(--line-soft);
+}
+.layer-switch button:last-child { border-right: none; }
+.layer-switch button.active {
+  background: var(--accent);
+  color: #0b2340;
+  font-weight: 600;
+}
 
 /* ======= LEFT: VISUALIZER ======= */
 .visualizer {
@@ -148,7 +171,7 @@ button:focus-visible { outline: 1px solid var(--accent-2); outline-offset: 2px; 
 .opening-fill { fill: rgba(255, 138, 61, 0.12); stroke: var(--accent); stroke-width: 1; }
 .door-fill { fill: rgba(90, 209, 230, 0.10); stroke: var(--accent-2); stroke-width: 1; }
 
-.stud-hover:hover, .stud-hover:active { stroke: var(--accent-2); stroke-width: 2; cursor: pointer; filter: drop-shadow(0 0 4px var(--accent-2)); }
+.stud-hover:hover { stroke: var(--accent-2); stroke-width: 2; cursor: pointer; filter: drop-shadow(0 0 4px var(--accent-2)); }
 
 .compass {
   position: absolute; top: 60px; right: 20px;
@@ -204,28 +227,14 @@ button:focus-visible { outline: 1px solid var(--accent-2); outline-offset: 2px; 
 }
 .step-bar button.nav:hover { border-color: var(--accent); color: var(--accent); }
 .step-bar button.nav:disabled { opacity: 0.3; cursor: not-allowed; }
-.step-pills { display: flex; gap: 3px; align-items: center; }
-/* Pill is a larger invisible hit target; the visible bar is painted via ::after.
-   Keeps the blueprint aesthetic (20×6 visible) while meeting a ~24×36 touch target. */
+.step-pills { display: flex; gap: 3px; }
 .step-pill {
-  width: 24px; height: 36px;
-  background: transparent;
-  cursor: pointer;
+  width: 20px; height: 6px; background: var(--line-soft); cursor: pointer; transition: background 0.15s;
   position: relative;
 }
-.step-pill::after {
-  content: "";
-  position: absolute;
-  left: 2px; right: 2px;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 6px;
-  background: var(--line-soft);
-  transition: background 0.15s, height 0.15s;
-}
-.step-pill.done::after { background: var(--ok); }
-.step-pill.active::after { background: var(--accent); height: 10px; }
-.step-pill:hover::after { background: var(--accent-2); }
+.step-pill.done { background: var(--ok); }
+.step-pill.active { background: var(--accent); height: 10px; margin-top: -2px; }
+.step-pill:hover { background: var(--accent-2); }
 .step-label {
   font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--line);
   white-space: nowrap;
@@ -336,27 +345,8 @@ button:focus-visible { outline: 1px solid var(--accent-2); outline-offset: 2px; 
 .step-list li.active { background: rgba(255, 138, 61, 0.10); border-left: 2px solid var(--accent); padding-left: 44px; }
 .step-list li.active::before { color: var(--accent); }
 .step-list li.done::before { content: "✓"; color: var(--ok); font-size: 14px; }
-.step-list li { padding-right: 52px; }
 .step-list .step-title { font-size: 12px; color: var(--line); letter-spacing: 0.02em; }
 .step-list .step-meta { font-size: 10px; color: var(--ink-soft); margin-top: 2px; letter-spacing: 0.08em; text-transform: uppercase; }
-.step-done-toggle {
-  position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 32px;
-  height: 32px;
-  border: 1px solid var(--line-soft);
-  border-radius: 50%;
-  color: var(--ink-soft);
-  font-size: 16px;
-  line-height: 1;
-  display: grid;
-  place-items: center;
-  background: rgba(0, 0, 0, 0.2);
-}
-.step-done-toggle:hover { border-color: var(--accent); color: var(--accent); }
-.step-list li.done .step-done-toggle { border-color: var(--ok); color: var(--ok); background: rgba(110, 231, 168, 0.08); }
 
 /* Step detail */
 .step-detail { padding: 12px; font-size: 12px; line-height: 1.55; }

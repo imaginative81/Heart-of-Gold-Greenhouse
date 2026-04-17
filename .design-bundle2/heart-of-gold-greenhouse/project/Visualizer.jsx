@@ -157,13 +157,6 @@ function IsoView({ show, activeStep, onHoverStud }) {
     onHoverStud({ ...info, x: e.clientX, y: e.clientY });
   };
   const handleLeave = () => onHoverStud && onHoverStud(null);
-  // Mouse uses continuous move + leave. Touch uses pointerdown (tap) and keeps
-  // the tooltip visible until the user taps elsewhere (handled in App.jsx).
-  const probeProps = (info) => ({
-    onPointerMove: (e) => { if (e.pointerType === "mouse") handleHover(e, info); },
-    onPointerLeave: (e) => { if (e.pointerType === "mouse") handleLeave(); },
-    onPointerDown:  (e) => { if (e.pointerType !== "mouse") { e.stopPropagation(); handleHover(e, info); } },
-  });
 
   // Panel seam grid (decorative overlay showing 2ft grid on skin)
   const panelGridLines = [];
@@ -206,7 +199,8 @@ function IsoView({ show, activeStep, onHoverStud }) {
         return (
           <line key={`ss-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
             className="frame-line stud stud-hover"
-            {...probeProps({ type: "South wall stud", pos: `x = ${s.x} ft`, len: "8'0\"" })}
+            onMouseMove={e => handleHover(e, { type: "South wall stud", pos: `x = ${s.x} ft`, len: "8'0\"" })}
+            onMouseLeave={handleLeave}
           />
         );
       })}
@@ -218,7 +212,8 @@ function IsoView({ show, activeStep, onHoverStud }) {
         return (
           <line key={`ns-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
             className="frame-line stud stud-hover"
-            {...probeProps({ type: "North wall stud", pos: `x = ${s.x} ft`, len: "6'8\"" })}
+            onMouseMove={e => handleHover(e, { type: "North wall stud", pos: `x = ${s.x} ft`, len: "6'8\"" })}
+            onMouseLeave={handleLeave}
           />
         );
       })}
@@ -236,11 +231,8 @@ function IsoView({ show, activeStep, onHoverStud }) {
           <line key={`g-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
             className={`frame-line stud stud-hover ${s.kind === "king" ? "" : ""}`}
             strokeDasharray={s.kind === "header" ? "3 2" : ""}
-            {...probeProps({
-              type: s.kind === "king" ? "Door king stud" : (s.kind === "header" ? "Door header" : "Gable stud"),
-              pos: `y = ${s.a[1]} ft`,
-              len: s.kind === "header" ? "48 in" : ftInch(dy)
-            })}
+            onMouseMove={e => handleHover(e, { type: s.kind === "king" ? "Door king stud" : (s.kind === "header" ? "Door header" : "Gable stud"), pos: `y = ${s.a[1]} ft`, len: s.kind === "header" ? "48 in" : ftInch(dy) })}
+            onMouseLeave={handleLeave}
           />
         );
       })}
@@ -286,7 +278,8 @@ function IsoView({ show, activeStep, onHoverStud }) {
         return (
           <line key={`r-${i}`} x1={x1} y1={y1} x2={x2} y2={y2}
             className="frame-line rafter stud-hover"
-            {...probeProps({ type: "Rafter", pos: `x = ${xMarks[i]} ft`, len: "12'4\" @ 4:12" })}
+            onMouseMove={e => handleHover(e, { type: "Rafter", pos: `x = ${xMarks[i]} ft`, len: "12'4\" @ 4:12" })}
+            onMouseLeave={handleLeave}
           />
         );
       })}

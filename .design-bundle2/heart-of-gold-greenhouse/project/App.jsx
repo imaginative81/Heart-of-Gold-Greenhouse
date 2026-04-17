@@ -69,17 +69,6 @@ function App() {
   useAE(() => localStorage.setItem("gh-layer", layer), [layer]);
   useAE(() => localStorage.setItem("gh-ptab", panelTab), [panelTab]);
 
-  // Touch: dismiss stud tooltip when tapping anywhere that isn't a probeable element.
-  useAE(() => {
-    const onDown = (e) => {
-      if (e.pointerType === "mouse") return;
-      if (e.target.closest && e.target.closest(".stud-hover")) return;
-      setHoverInfo(null);
-    };
-    document.addEventListener("pointerdown", onDown);
-    return () => document.removeEventListener("pointerdown", onDown);
-  }, []);
-
   // Tweaks protocol
   useAE(() => {
     const onMsg = (e) => {

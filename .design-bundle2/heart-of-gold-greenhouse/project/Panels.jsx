@@ -69,23 +69,15 @@ function StepsPanel({ activeStep, setActiveStep, doneSet, setDoneSet }) {
             key={s.id}
             className={`${activeStep === s.id ? "active" : ""} ${doneSet.has(s.id) ? "done" : ""}`}
             onClick={() => setActiveStep(s.id)}
+            onDoubleClick={(e) => { e.stopPropagation(); toggleDone(s.id); }}
           >
             <div className="step-title">{s.title}</div>
             <div className="step-meta">{s.meta}</div>
-            <button
-              type="button"
-              className="step-done-toggle"
-              aria-label={doneSet.has(s.id) ? "Mark step incomplete" : "Mark step complete"}
-              aria-pressed={doneSet.has(s.id)}
-              onClick={(e) => { e.stopPropagation(); toggleDone(s.id); }}
-            >
-              {doneSet.has(s.id) ? "✓" : ""}
-            </button>
           </li>
         ))}
       </ul>
       <div style={{ padding: "8px 12px", fontSize: 10, color: "var(--ink-soft)", letterSpacing: "0.08em", borderTop: "1px solid var(--line-soft)" }}>
-        TAP THE CIRCLE ON A STEP TO MARK COMPLETE
+        DOUBLE-CLICK A STEP TO MARK COMPLETE
       </div>
     </div>
   );
